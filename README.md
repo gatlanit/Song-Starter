@@ -3,6 +3,13 @@ Do you have writers block? Do you struggle to come up with ideas for music? This
 
 ---
 
+### Roadmap:
+  - Release on various platforms:
+    - CLI (WIP)
+    - QT (gui application)
+
+---
+
 ### TODO:
   - [ ] Add: Mode randomizer
   - [ ] Add: intelligent chord progression generator
