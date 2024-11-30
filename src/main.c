@@ -30,6 +30,8 @@ char *generate_mode() {
   return (char *)modes[rand() % (1 - 0 + 1) + 0];
 }
 
+int generate_chord_progression() { return 0; } // TODO:
+
 int main() {
   char input[10]; // Buffer for user input
 
