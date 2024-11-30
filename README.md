@@ -11,11 +11,11 @@ Do you have writers block? Do you struggle to come up with ideas for music? This
 ---
 
 ### TODO:
-  - [ ] Add: Mode randomizer
-  - [ ] Add: intelligent chord progression generator
 
 ### WIP:
-  - [ ] Key randomizer
+  - [ ] Add: intelligent chord progression generator
 
 ### DONE:
   - [x] BPM randomizer (75-200)
+  - [x] Key randomizer
+  - [x] Mode randomizer (Major and Minor)
