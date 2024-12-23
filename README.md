@@ -11,6 +11,8 @@ Run again? Type anything to refresh (or "q" to exit): q
 Exiting song starter...
 ```
 
+https://github.com/user-attachments/assets/3467c9b4-759b-4ce0-b72a-fdbd926bce0d
+
 > Track made using parameters given as a base for it
 
 ---
