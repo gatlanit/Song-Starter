@@ -6,9 +6,19 @@
 
 /*
   TODO:
-  - Make sure "Intelligent" Chord Progression Generator is Good
+  - Setup Update and download for user
 
 */
+
+void check_updates() {
+  printf("Checking for updates...\n");
+  int result = system("curl -sSL https://raw.githubusercontent.com/gatlanit/Song-Starter/main/install.sh | bash");
+  if (result == 0) {
+      printf("Update successful.\n");
+  } else {
+      printf("Update failed.\n");
+  }
+}
 
 int generate_bpm() {
   srand(time(0));
@@ -77,7 +87,14 @@ void generate_chord_progression(char *mode) {
   printf("}\n");
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+  if (argc > 1) {
+    if (strcmp(argv[1], "-u") == 0 || strcmp(argv[1], "-update") == 0 || strcmp(argv[1], "update") == 0) {
+      check_updates();
+      return 0;
+    }
+  }
+
   char input[10]; // Buffer for user input
 
   do {
