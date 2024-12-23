@@ -50,3 +50,7 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# MacOS and IDE Nuances
+*.DS_Store
+*.vscode
