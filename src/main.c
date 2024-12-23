@@ -6,8 +6,8 @@
 
 /*
   TODO:
-  - Randomize Chord progression
-      - depending on chord progresion length that is also random
+  - Make sure "Intelligent" Chord Progression Generator is Good
+
 */
 
 int generate_bpm() {
@@ -28,41 +28,42 @@ char *generate_mode() {
   return (char *)modes[rand() % 2];
 }
 
-/*
-  FIX:
-    - Some issues with generating the chord progression including
-      - Getting weird results such as starting with 0
-      - Abnormally large numbers
-      - Wrong numbers for their chord degrees
-      - Etc
-*/
 void generate_chord_progression(char *mode) {
-  int majorChordChoices[8][6] = {{1, 6, 3}, {4, 2, 5, 7}, {5, 7, 4, 2, 1, 6},
-                                 {1, 6, 5}, {4, 2, 1, 6}, {5, 7, 6, 2, 6},
-                                 {5, 1, 6}, {1, 6, 3}};
 
-  int minorChordChoices[8][6] = {{1, 6, 3}, {4, 2, 5, 7}, {5, 7, 4, 2, 1, 6},
-                                 {1, 6, 5}, {4, 2, 1, 6}, {5, 7, 4, 2, 6},
-                                 {5, 1, 6}, {1, 6, 3}};
+  // Zeros added as placeholders to fill in allocated space
 
-  int progresionLengths[] = {4, 8, 16};
-  int length = progresionLengths[rand() % 3];
+  /*
+    Numbers 1-7 refer to each chord in a chord progression
+    (e.g. 1 = Tonic, 5 = Perfect 5th, etc)
+  */
+  int majorChordChoices[8][6] = {{1, 6, 3, 0, 0, 0}, {4, 2, 5, 7, 0, 0},
+                                 {5, 7, 4, 2, 1, 6}, {1, 6, 5, 0, 0, 0},
+                                 {4, 2, 1, 6, 0, 0}, {5, 7, 6, 2, 6, 0},
+                                 {5, 1, 6, 0, 0, 0}, {1, 6, 3, 0, 0, 0}};
+
+  int minorChordChoices[8][6] = {{1, 6, 3, 0, 0, 0}, {4, 2, 5, 7, 0, 0},
+                                 {5, 7, 4, 2, 1, 6}, {1, 6, 5, 0, 0, 0},
+                                 {4, 2, 1, 6, 0, 0}, {5, 7, 4, 2, 6, 0},
+                                 {5, 1, 6, 0, 0, 0}, {1, 6, 3, 0, 0, 0}};
+
+  int columnSizes[8] = {
+      3, 4, 6, 3, 4, 5, 3, 3}; // Predetermined number of columns for each row
+  int progresionLengths[] = {4, 8}; // Either 4 or 8 bars long
+  int length = progresionLengths[rand() % 2];
 
   int chordProgression[length];
 
   for (int i = 0; i < length; i++) {
     if (strcmp(mode, "Major") == 0) {
-      int sizeOfColumn =
-          sizeof(majorChordChoices) / sizeof(majorChordChoices[i][0]);
+      int sizeOfColumn = columnSizes[i % 8];
       int randomIndex = rand() % sizeOfColumn;
 
-      chordProgression[i] = majorChordChoices[i][randomIndex];
+      chordProgression[i] = majorChordChoices[i % 8][randomIndex];
     } else {
-      int sizeOfColumn =
-          sizeof(minorChordChoices) / sizeof(minorChordChoices[i][0]);
+      int sizeOfColumn = columnSizes[i % 8];
       int randomIndex = rand() % sizeOfColumn;
 
-      chordProgression[i] = minorChordChoices[i][randomIndex];
+      chordProgression[i] = minorChordChoices[i % 8][randomIndex];
     }
   }
 
