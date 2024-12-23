@@ -2,15 +2,17 @@
 
 ### Do you have writers block? Do you struggle to come up with ideas for music? This program might be able to help you out!
 ```
-BPM: 91
-Key: D
+BPM: 160
+Key: F
 Modes: Minor
-Chord Progression: { 1 7 4 6 }
+Chord Progression: { 1 4 6 7 }
 
 Run again? Type anything to refresh (or "q" to exit): q
 Exiting song starter...
 ```
-https://github.com/user-attachments/assets/d14b9626-8508-42cb-8958-f8e8d2cef651
+
+https://github.com/user-attachments/assets/3467c9b4-759b-4ce0-b72a-fdbd926bce0d
+
 > Track made using parameters given as a base for it
 
 ---
