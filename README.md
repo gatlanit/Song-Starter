@@ -13,9 +13,10 @@ Do you have writers block? Do you struggle to come up with ideas for music? This
 ### TODO:
 
 ### WIP:
-  - [ ] Add: intelligent chord progression generator
+  - [ ] Ability to download, update, and run as terminal command in Linux and MacOS
 
 ### DONE:
+  - [x] Intelligent chord progression generator
   - [x] BPM randomizer (75-200)
   - [x] Key randomizer
   - [x] Mode randomizer (Major and Minor)
