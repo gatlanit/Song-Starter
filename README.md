@@ -22,7 +22,7 @@ Exiting song starter...
 ### TODO:
 
 ### WIP:
-  - [ ] Ability to download, update, and run as terminal command in Linux and MacOS
+  - [ ] CLI Tool for User
 
 ### DONE:
   - [x] Intelligent chord progression generator
