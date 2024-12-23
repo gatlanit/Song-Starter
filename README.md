@@ -13,8 +13,6 @@ Exiting song starter...
 https://github.com/user-attachments/assets/d14b9626-8508-42cb-8958-f8e8d2cef651
 > Track made using parameters given as a base for it
 
-<br>
-
 ---
 ### Roadmap:
   - Release on various platforms:
