@@ -12,7 +12,7 @@
 
 void check_updates() {
   printf("Checking for updates...\n");
-  int result = system("curl -sSL https://raw.githubusercontent.com/gatlanit/Song-Starter/main/install.sh | bash");
+  int result = system("curl -sSL https://raw.githubusercontent.com/gatlanit/Song-Starter/master/install.sh | bash");
   if (result == 0) {
       printf("Update successful.\n");
   } else {
