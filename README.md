@@ -9,7 +9,7 @@ https://github.com/user-attachments/assets/3467c9b4-759b-4ce0-b72a-fdbd926bce0d
 ---
 ## How to use
 - run this command for Linux and MacOS users
-  - ```curl -sSL https://raw.githubusercontent.com/gatlanit/Song-Starter/main/install.sh | bash```
+  - ```curl -sSL https://raw.githubusercontent.com/gatlanit/Song-Starter/master/install.sh | bash```
 
 <br>
 
