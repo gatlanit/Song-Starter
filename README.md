@@ -1,5 +1,6 @@
 # Song-Starter
-Do you have writers block? Do you struggle to come up with ideas for music? This program might be able to help you out!
+
+### Do you have writers block? Do you struggle to come up with ideas for music? This program might be able to help you out!
 ```
 BPM: 91
 Key: D
@@ -9,13 +10,12 @@ Chord Progression: { 1 7 4 6 }
 Run again? Type anything to refresh (or "q" to exit): q
 Exiting song starter...
 ```
+https://github.com/user-attachments/assets/d14b9626-8508-42cb-8958-f8e8d2cef651
 > Track made using parameters given as a base for it
 
-https://github.com/user-attachments/assets/d14b9626-8508-42cb-8958-f8e8d2cef651
-
+<br>
 
 ---
-
 ### Roadmap:
   - Release on various platforms:
     - CLI (WIP)
