@@ -40,9 +40,7 @@ user@computer ~ %
 > MacOS zsh example
 ---
 ### Roadmap:
-  - Release on various platforms:
-    - CLI (WIP)
-    - QT (gui application)
+  - Feel free to create an issue for any suggestions you may have (bug, feature, formatting, etc.)
 
 ---
 
