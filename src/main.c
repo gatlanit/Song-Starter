@@ -90,14 +90,14 @@ void generate_chord_progression(char *mode) {
 }
 
 int main(int argc, char *argv[]) {
-  const char version[] = "v0.9.61";
+  const char version[] = "0.9.63";
 
   if (argc > 1) {
     if (strcmp(argv[1], "-u") == 0 || strcmp(argv[1], "update") == 0) {
       check_updates();
       return 0;
     } else if (strcmp(argv[1], "-v") == 0 || strcmp(argv[1], "version") == 0) {
-      printf("%s\n", version);
+      printf("Song Starter version %s\n", version);
       return 0;
     }
   }
