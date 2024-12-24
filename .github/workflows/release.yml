@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - 'v*' # Trigger workflow on tags matching the pattern v*
+      - 'v*'  # Trigger workflow on tags matching the pattern v*
 
 jobs:
   build:
@@ -47,6 +47,9 @@ jobs:
           fi
           $CC $CFLAGS src/main.c -o song-starter-${OS_NAME}-${{ matrix.arch }}
 
+      - name: List files after build
+        run: ls -R .  # This will show if the binary is created
+
       - name: Upload binary to artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -65,7 +68,7 @@ jobs:
           path: ./artifacts
 
       - name: List downloaded artifacts
-        run: ls -R ./artifacts
+        run: ls -R ./artifacts  # Check if the artifact is actually downloaded
 
       - name: Create GitHub Release
         id: create_release
@@ -84,6 +87,36 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/song-starter-*
-          asset_name: song-starter-${{ matrix.os == 'ubuntu-latest' && 'linux' || 'osx' }}-${{ matrix.arch }}
+          asset_path: ./artifacts/song-starter-linux-arm64/song-starter-linux-arm64  # Path to the downloaded file
+          asset_name: song-starter-linux-arm64  # Name of the asset to upload
+          asset_content_type: application/octet-stream
+
+      - name: Upload Linux x86_64 asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/song-starter-linux-x86_64/song-starter-linux-x86_64
+          asset_name: song-starter-linux-x86_64
+          asset_content_type: application/octet-stream
+
+      - name: Upload macOS ARM64 asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/song-starter-osx-arm64/song-starter-osx-arm64
+          asset_name: song-starter-osx-arm64
+          asset_content_type: application/octet-stream
+
+      - name: Upload macOS x86_64 asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/song-starter-osx-x86_64/song-starter-osx-x86_64
+          asset_name: song-starter-osx-x86_64
           asset_content_type: application/octet-stream
