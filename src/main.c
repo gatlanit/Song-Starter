@@ -6,8 +6,7 @@
 
 /*
   TODO:
-  - Track Version
-
+  - Final touches before v1.0.0
 */
 
 void check_updates() {
@@ -90,14 +89,14 @@ void generate_chord_progression(char *mode) {
 }
 
 int main(int argc, char *argv[]) {
-  const char version[] = "v0.9.66";
+  const char version[] = "v0.9.67";
 
   if (argc > 1) {
     if (strcmp(argv[1], "-u") == 0 || strcmp(argv[1], "update") == 0) {
       check_updates();
       return 0;
     } else if (strcmp(argv[1], "-v") == 0 || strcmp(argv[1], "version") == 0) {
-      printf("Song Starter version %s\n", version);
+      printf("SongStarter version %s\n", version);
       return 0;
     }
   }
