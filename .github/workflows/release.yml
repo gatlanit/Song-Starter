@@ -62,7 +62,10 @@ jobs:
       - name: Download all artifacts
         uses: actions/download-artifact@v3
         with:
-          path: artifacts
+          path: ./artifacts
+
+      - name: List downloaded artifacts
+        run: ls -R ./artifacts
 
       - name: Create GitHub Release
         id: create_release
@@ -81,6 +84,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: artifacts/song-starter-*
+          asset_path: ./artifacts/song-starter-*
           asset_name: song-starter-${{ matrix.os == 'ubuntu-latest' && 'linux' || 'osx' }}-${{ matrix.arch }}
           asset_content_type: application/octet-stream
