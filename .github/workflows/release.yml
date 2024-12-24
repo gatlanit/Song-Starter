@@ -43,9 +43,6 @@ jobs:
             export CC=clang
             if [[ "${{ matrix.arch }}" == "arm64" ]]; then
               export CFLAGS="-target arm64-apple-macos11"
-            else
-              # For x86_64, no specific flag
-              unset CFLAGS
             fi
           fi
           $CC $CFLAGS src/main.c -o song-starter-${OS_NAME}-${{ matrix.arch }}
@@ -84,42 +81,54 @@ jobs:
           draft: false
           prerelease: false
 
+      - name: List contents of artifact directory (Linux ARM64)
+        run: ls -R ./artifacts/song-starter-linux-arm64
+
       - name: Upload release assets (Linux ARM64)
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/song-starter-linux-arm64
+          asset_path: ./artifacts/song-starter-linux-arm64/song-starter-linux-arm64  # Corrected path to the actual file
           asset_name: song-starter-linux-arm64
           asset_content_type: application/octet-stream
 
-      - name: Upload release assets (Linux x86_64)
+      - name: List contents of artifact directory (Linux x86_64)
+        run: ls -R ./artifacts/song-starter-linux-x86_64
+
+      - name: Upload Linux x86_64 asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/song-starter-linux-x86_64
+          asset_path: ./artifacts/song-starter-linux-x86_64/song-starter-linux-x86_64
           asset_name: song-starter-linux-x86_64
           asset_content_type: application/octet-stream
 
-      - name: Upload release assets (macOS ARM64)
+      - name: List contents of artifact directory (macOS ARM64)
+        run: ls -R ./artifacts/song-starter-osx-arm64
+
+      - name: Upload macOS ARM64 asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/song-starter-osx-arm64
+          asset_path: ./artifacts/song-starter-osx-arm64/song-starter-osx-arm64
           asset_name: song-starter-osx-arm64
           asset_content_type: application/octet-stream
 
-      - name: Upload release assets (macOS x86_64)
+      - name: List contents of artifact directory (macOS x86_64)
+        run: ls -R ./artifacts/song-starter-osx-x86_64
+
+      - name: Upload macOS x86_64 asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/song-starter-osx-x86_64
+          asset_path: ./artifacts/song-starter-osx-x86_64/song-starter-osx-x86_64
           asset_name: song-starter-osx-x86_64
           asset_content_type: application/octet-stream
