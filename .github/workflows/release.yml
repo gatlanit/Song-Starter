@@ -29,20 +29,22 @@ jobs:
       - name: Build binary
         run: |
           if [[ "$RUNNER_OS" == "Linux" ]]; then
+            export OS_NAME="linux"
             export CC=gcc
             if [[ "${{ matrix.arch }}" == "arm64" ]]; then
               export CC=aarch64-linux-gnu-gcc
             fi
           elif [[ "$RUNNER_OS" == "macOS" ]]; then
+            export OS_NAME="osx"
             export CC=clang
           fi
-          $CC main.c -o song-starter-${{ runner.os | toLower }}-${{ matrix.arch }}
+          $CC main.c -o song-starter-${OS_NAME}-${{ matrix.arch }}
 
       - name: Upload binary to artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: song-starter-${{ runner.os | toLower }}-${{ matrix.arch }}
-          path: song-starter-${{ runner.os | toLower }}-${{ matrix.arch }}
+          name: song-starter-${{ matrix.os == 'ubuntu-latest' && 'linux' || 'osx' }}-${{ matrix.arch }}
+          path: song-starter-${{ matrix.os == 'ubuntu-latest' && 'linux' || 'osx' }}-${{ matrix.arch }}
 
   release:
     needs: build
