@@ -39,6 +39,28 @@ fi
 # Fetch the latest release from GitHub
 LATEST_RELEASE=$(curl -s https://api.github.com/repos/$REPO/releases/latest | grep "tag_name" | awk -F ': "' '{print $2}' | sed 's/",//')
 
+# Check current installed version, if any
+if command -v song-starter &>/dev/null; then
+  INSTALLED_VERSION=$(song-starter -v 2>/dev/null || echo "unknown")
+else
+  INSTALLED_VERSION="none"
+fi
+
+echo "Installed version: $INSTALLED_VERSION"
+echo "Latest version: $LATEST_RELEASE"
+
+if [ "$INSTALLED_VERSION" == "$LATEST_RELEASE" ]; then
+  echo "You already have the latest version installed."
+  exit 0
+fi
+
+# Show version change
+if [ "$INSTALLED_VERSION" != "none" ]; then
+  echo "Updating song-starter: $INSTALLED_VERSION > $LATEST_RELEASE"
+else
+  echo "Installing song-starter version $LATEST_RELEASE"
+fi
+
 # Download the binary for user's platform
 echo "Downloading song-starter version $LATEST_RELEASE for $OS $ARCH..."
 curl -L "https://github.com/$REPO/releases/download/$LATEST_RELEASE/$BINARY" -o song-starter
@@ -63,4 +85,3 @@ echo "Installing song-starter to $DESTINATION..."
 sudo mv song-starter $DESTINATION
 
 echo "Installation complete!"
-
