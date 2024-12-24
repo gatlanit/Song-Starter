@@ -16,6 +16,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: List files in the working directory
+        run: ls -R
+
       - name: Set up build environment
         if: runner.os == 'Linux'
         run: |
@@ -28,6 +31,7 @@ jobs:
 
       - name: Build binary
         run: |
+          echo "Compiling src/main.c with $CC"
           if [[ "$RUNNER_OS" == "Linux" ]]; then
             export OS_NAME="linux"
             export CC=gcc
@@ -37,8 +41,11 @@ jobs:
           elif [[ "$RUNNER_OS" == "macOS" ]]; then
             export OS_NAME="osx"
             export CC=clang
+            if [[ "${{ matrix.arch }}" == "arm64" ]]; then
+              export CFLAGS="-target arm64-apple-macos11"
+            fi
           fi
-          $CC main.c -o song-starter-${OS_NAME}-${{ matrix.arch }}
+          $CC $CFLAGS src/main.c -o song-starter-${OS_NAME}-${{ matrix.arch }}
 
       - name: Upload binary to artifacts
         uses: actions/upload-artifact@v3
