@@ -3,67 +3,78 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'  # Trigger the workflow on tags that start with 'v'
+      - 'v*'  # Trigger workflow on tags matching the pattern v*
 
 jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]  # Runs on both Linux (Ubuntu) and MacOS
-        arch: [x86_64, arm64]  # Builds for both x86_64 and arm64 architectures
+        os: [ubuntu-latest, macos-latest]
+        arch: [x86_64, arm64]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up build environment (Linux)
+      - name: List files in the working directory
+        run: ls -R
+
+      - name: Set up build environment
         if: runner.os == 'Linux'
         run: |
           sudo apt update
           sudo apt install -y build-essential
 
-      - name: Set up cross-compiler for ARM64 (Linux)
+      - name: Set up cross-compiler for ARM64
         if: matrix.arch == 'arm64' && runner.os == 'Linux'
         run: sudo apt install -y gcc-aarch64-linux-gnu
 
-      - name: Build binary for Linux (x86_64)
-        if: matrix.os == 'ubuntu-latest' && matrix.arch == 'x86_64'
+      - name: Build binary
         run: |
-          export CC=gcc
-          gcc src/main.c -o song-starter-linux-x86_64
+          echo "Compiling src/main.c with $CC"
+          if [[ "$RUNNER_OS" == "Linux" ]]; then
+            export OS_NAME="linux"
+            export CC=gcc
+            if [[ "${{ matrix.arch }}" == "arm64" ]]; then
+              export CC=aarch64-linux-gnu-gcc
+            fi
+          elif [[ "$RUNNER_OS" == "macOS" ]]; then
+            export OS_NAME="osx"
+            export CC=clang
+            if [[ "${{ matrix.arch }}" == "arm64" ]]; then
+              export CFLAGS="-target arm64-apple-macos11"
+            else
+              # For x86_64, no specific flag
+              unset CFLAGS
+            fi
+          fi
+          $CC $CFLAGS src/main.c -o song-starter-${OS_NAME}-${{ matrix.arch }}
 
-      - name: Build binary for Linux (arm64)
-        if: matrix.os == 'ubuntu-latest' && matrix.arch == 'arm64'
-        run: |
-          export CC=aarch64-linux-gnu-gcc
-          gcc src/main.c -o song-starter-linux-arm64
+      - name: List files after build
+        run: ls -R .  # This will show if the binary is created
 
-      - name: Build binary for MacOS (x86_64)
-        if: matrix.os == 'macos-latest' && matrix.arch == 'x86_64'
-        run: |
-          clang -arch x86_64 -o song-starter-osx-x86_64 src/main.c
-
-      - name: Build binary for MacOS (arm64)
-        if: matrix.os == 'macos-latest' && matrix.arch == 'arm64'
-        run: |
-          clang -arch arm64 -o song-starter-osx-arm64 src/main.c
-
-      - name: Upload binary as artifact
+      - name: Upload binary to artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: song-starter-${{ runner.os }}-${{ matrix.arch }}
-          path: song-starter-${{ runner.os }}-${{ matrix.arch }}
+          name: song-starter-${{ matrix.os == 'ubuntu-latest' && 'linux' || 'osx' }}-${{ matrix.arch }}
+          path: song-starter-${{ matrix.os == 'ubuntu-latest' && 'linux' || 'osx' }}-${{ matrix.arch }}
 
   release:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Download all artifacts
         uses: actions/download-artifact@v3
         with:
-          path: artifacts
+          path: ./artifacts
+
+      - name: List downloaded artifacts
+        run: ls -R ./artifacts  # Check if the artifact is actually downloaded
 
       - name: Create GitHub Release
+        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -73,12 +84,42 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload release assets
+      - name: Upload release assets (Linux ARM64)
         uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: ./artifacts/song-starter-*
-          asset_name: song-starter-${{ runner.os }}-${{ matrix.arch }}
-          asset_content_type: application/octet-stream
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/song-starter-linux-arm64
+          asset_name: song-starter-linux-arm64
+          asset_content_type: application/octet-stream
+
+      - name: Upload release assets (Linux x86_64)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/song-starter-linux-x86_64
+          asset_name: song-starter-linux-x86_64
+          asset_content_type: application/octet-stream
+
+      - name: Upload release assets (macOS ARM64)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/song-starter-osx-arm64
+          asset_name: song-starter-osx-arm64
+          asset_content_type: application/octet-stream
+
+      - name: Upload release assets (macOS x86_64)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/song-starter-osx-x86_64
+          asset_name: song-starter-osx-x86_64
+          asset_content_type: application/octet-stream
