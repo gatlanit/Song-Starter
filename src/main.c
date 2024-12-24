@@ -6,17 +6,19 @@
 
 /*
   TODO:
-  - Setup Update and download for user
+  - Track Version
 
 */
 
 void check_updates() {
   printf("Checking for updates...\n");
-  int result = system("curl -sSL https://raw.githubusercontent.com/gatlanit/Song-Starter/master/install.sh | bash");
+  int result = system("curl -sSL "
+                      "https://raw.githubusercontent.com/gatlanit/Song-Starter/"
+                      "master/install.sh | bash");
   if (result == 0) {
-      printf("Update successful.\n");
+    printf("Update successful.\n");
   } else {
-      printf("Update failed.\n");
+    printf("Update failed.\n");
   }
 }
 
@@ -46,7 +48,7 @@ void generate_chord_progression(char *mode) {
     Numbers 1-7 refer to each chord in a chord progression
     (e.g. 1 = Tonic, 5 = Perfect 5th, etc)
   */
-  int majorChordChoices[8][6] = {{1, 6, 3, 0, 0, 0}, {4, 2, 5, 7, 0, 0},
+  int majorChordChoices[8][6] = {{1, 6, 3, 1, 1, 6}, {4, 2, 5, 7, 0, 0},
                                  {5, 7, 4, 2, 1, 6}, {1, 6, 5, 0, 0, 0},
                                  {4, 2, 1, 6, 0, 0}, {5, 7, 6, 2, 6, 0},
                                  {5, 1, 6, 0, 0, 0}, {1, 6, 3, 0, 0, 0}};
@@ -57,7 +59,7 @@ void generate_chord_progression(char *mode) {
                                  {5, 1, 6, 0, 0, 0}, {1, 6, 3, 0, 0, 0}};
 
   int columnSizes[8] = {
-      3, 4, 6, 3, 4, 5, 3, 3}; // Predetermined number of columns for each row
+      6, 4, 6, 3, 4, 5, 3, 3}; // Predetermined number of columns for each row
   int progresionLengths[] = {4, 8}; // Either 4 or 8 bars long
   int length = progresionLengths[rand() % 2];
 
@@ -88,9 +90,14 @@ void generate_chord_progression(char *mode) {
 }
 
 int main(int argc, char *argv[]) {
+  const char version[] = "v0.9.58";
+
   if (argc > 1) {
-    if (strcmp(argv[1], "-u") == 0 || strcmp(argv[1], "-update") == 0 || strcmp(argv[1], "update") == 0) {
+    if (strcmp(argv[1], "-u") == 0 || strcmp(argv[1], "update") == 0) {
       check_updates();
+      return 0;
+    } else if (strcmp(argv[1], "-v") == 0 || strcmp(argv[1], "version") == 0) {
+      printf("%s", version);
       return 0;
     }
   }
