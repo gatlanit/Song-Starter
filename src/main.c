@@ -90,7 +90,7 @@ void generate_chord_progression(char *mode) {
 }
 
 int main(int argc, char *argv[]) {
-  const char version[] = "v0.9.65";
+  const char version[] = "v0.9.66";
 
   if (argc > 1) {
     if (strcmp(argv[1], "-u") == 0 || strcmp(argv[1], "update") == 0) {

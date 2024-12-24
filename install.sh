@@ -9,7 +9,7 @@ REPO="gatlanit/Song-Starter"
 OS=$(uname | tr '[:upper:]' '[:lower:]')
 ARCH=$(uname -m)
 
-# Make sure correct OS is being using here
+# Make sure correct OS is being used here
 if [ "$OS" != "darwin" ] && [ "$OS" != "linux" ]; then
   echo "Unsupported OS: $OS"
   exit 1
@@ -41,7 +41,7 @@ LATEST_RELEASE=$(curl -s https://api.github.com/repos/$REPO/releases/latest | gr
 
 # Check current installed version, if any
 if command -v song-starter &>/dev/null; then
-  INSTALLED_VERSION=$(song-starter -v 2>/dev/null || echo "unknown")
+  INSTALLED_VERSION=$(song-starter -v 2>/dev/null | grep -oE "v[0-9]+\.[0-9]+\.[0-9]+") # Only grab version from -v flag
 else
   INSTALLED_VERSION="none"
 fi
@@ -74,14 +74,8 @@ if [ ! -d "/usr/local/bin" ]; then
 fi
 
 # Move the binary to the correct location
-if [ "$OS" == "darwin" ]; then
-  DESTINATION="/usr/local/bin/song-starter"
-elif [ "$OS" == "linux" ]; then
-  DESTINATION="/usr/local/bin/song-starter"
-fi
-
-# Install the binary
+DESTINATION="/usr/local/bin/song-starter" # Linux and MacOS install location
 echo "Installing song-starter to $DESTINATION..."
 sudo mv song-starter $DESTINATION
 
-echo "Installation complete!"
+echo "Installation complete! Version $LATEST_RELEASE is now installed."
