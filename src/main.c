@@ -97,7 +97,7 @@ int main(int argc, char *argv[]) {
       check_updates();
       return 0;
     } else if (strcmp(argv[1], "-v") == 0 || strcmp(argv[1], "version") == 0) {
-      printf("%s", version);
+      printf("%s\n", version);
       return 0;
     }
   }
