@@ -18,7 +18,7 @@ curl -sSL https://raw.githubusercontent.com/gatlanit/Song-Starter/master/install
 - Run ```song-starter``` in your terminal to use program
   - ```q``` will quit the program once run
   - ```r``` or any other key will rerun it
-  - ```song-starter -u``` or ```song-starter update``` will update the program
+  - ```song-starter -h``` or ```song-starter help``` for more commands
 
 ```
 user@computer ~ % song-starter
@@ -37,14 +37,14 @@ Run again? Type anything to refresh (or "q" to exit): q
 Exiting song starter...
 user@computer ~ %
 ```
-> MacOS zsh example
+> MacOS zsh example usage
 ---
 ### Roadmap:
   - Feel free to create an issue for any suggestions you may have (bug, feature, formatting, etc.)
 
 ---
 
-### TODO: N/A
+### TODO:
 
 ### WIP:
   - [ ] v1.0.0 Release (Final touches and polish)
