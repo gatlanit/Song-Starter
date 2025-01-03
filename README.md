@@ -44,10 +44,10 @@ user@computer ~ %
 
 ---
 
-### TODO:
+### TODO: N/A
 
 ### WIP:
-  - [ ] CLI Tool for User
+  - [ ] v1.0.0 Release (Final touches and polish)
 
 ### DONE:
   - [x] Intelligent chord progression generator
