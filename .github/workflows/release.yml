@@ -77,6 +77,8 @@ jobs:
         run: |
           for binary in ./artifacts/song-starter-*; do
             arch=$(basename $binary | cut -d- -f3-)
-            echo "Uploading $binary as song-starter-$arch"
-            gh release upload "${{ github.ref_name }}" "$binary" --name "song-starter-$arch"
+            renamed_binary="./artifacts/song-starter-$arch"
+            mv "$binary" "$renamed_binary"
+            echo "Uploading $renamed_binary"
+            gh release upload "${{ github.ref_name }}" "$renamed_binary" --clobber
           done
