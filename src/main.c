@@ -95,19 +95,21 @@ int main(int argc, char *argv[]) {
   const char version[] = "v1.0.0";
 
   char *valid_keys[] = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
+  const char *valid_modes[] = {"Major", "Minor"};
 
+  // Initial values (tagged as eligible for randomization)
   int bpm = -1;
   char *mode = NULL;
   char *key = NULL;
 
-  if (argc == 2) {
-    if (strcmp(argv[1], "-u") == 0 || strcmp(argv[1], "update") == 0) {
+  for (int i = 1; i < argc; i++) {
+    if (strcmp(argv[i], "-u") == 0 || strcmp(argv[i], "update") == 0) {
       check_updates();
       return 0;
-    } else if (strcmp(argv[1], "-v") == 0 || strcmp(argv[1], "version") == 0) {
+    } else if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "version") == 0) {
       printf("SongStarter version %s\n", version);
       return 0;
-    } else if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "help") == 0) {
+    } else if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "help") == 0) {
       printf("Example usage:\n");
       printf("  song-starter                  Generate parameters\n");
       printf("  song-starter [-h | help]      Get help\n");
@@ -115,7 +117,7 @@ int main(int argc, char *argv[]) {
       printf("  song-starter [-u | update]    Check and install updates\n");
       printf("\nFurther help -> https://github.com/gatlanit/Song-Starter\n");
       return 0;
-    }
+    } 
   } 
 
   char input[10]; // Buffer for user input
@@ -124,11 +126,11 @@ int main(int argc, char *argv[]) {
     // Check if input is "q", "Q", "Quit", or "quit"
     if (strcmp(input, "q") == 0 || strcmp(input, "Q") == 0 ||
         strcmp(input, "Quit") == 0 || strcmp(input, "quit") == 0) {
-      break; // Exit the loop if the user enters the following
+      break;
     }
 
     // To be used in chord Progression
-    char *mode = generate_mode();
+    mode = generate_mode();
 
     printf("BPM: %d\n", generate_bpm());
     printf("Key: %s\n", generate_key());
