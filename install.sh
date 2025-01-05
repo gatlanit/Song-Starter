@@ -9,6 +9,11 @@ REPO="gatlanit/Song-Starter"
 OS=$(uname | tr '[:upper:]' '[:lower:]')
 ARCH=$(uname -m)
 
+# Normalize ARCH to handle ARM64 detection
+if [ "$ARCH" == "aarch64" ]; then
+  ARCH="arm64"
+fi
+
 # Make sure correct OS is being used here
 if [ "$OS" != "darwin" ] && [ "$OS" != "linux" ]; then
   echo "Unsupported OS: $OS"

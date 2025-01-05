@@ -6,7 +6,7 @@
 
 /*
   TODO:
-  - Final touches before v1.0.0
+  Command Line arguments to customize paramaters (i.e # chords, mode, key, and bpm)
 */
 
 void check_updates() {
@@ -19,6 +19,13 @@ void check_updates() {
   } else {
     printf("Update failed.\n");
   }
+}
+
+int is_number(const char *str) {
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (!isdigit(str[i])) return 0;
+    }
+    return 1;
 }
 
 int generate_bpm() {
@@ -40,7 +47,6 @@ char *generate_mode() {
 }
 
 void generate_chord_progression(char *mode) {
-
   // Zeros added as placeholders to fill in allocated space
 
   /*
@@ -57,8 +63,7 @@ void generate_chord_progression(char *mode) {
                                  {4, 2, 1, 6, 0, 0}, {5, 7, 4, 2, 6, 0},
                                  {5, 1, 6, 0, 0, 0}, {1, 6, 3, 0, 0, 0}};
 
-  int columnSizes[8] = {
-      6, 4, 6, 3, 4, 5, 3, 3}; // Predetermined number of columns for each row
+  int columnSizes[8] = {6, 4, 6, 3, 4, 5, 3, 3}; // Predetermined number of columns for each row
   int progresionLengths[] = {4, 8}; // Either 4 or 8 bars long
   int length = progresionLengths[rand() % 2];
 
@@ -79,27 +84,39 @@ void generate_chord_progression(char *mode) {
   }
 
   printf("Chord Progression: { ");
-
   for (int i = 0; i < sizeof(chordProgression) / sizeof(chordProgression[0]);
        i++) {
     printf("%d ", chordProgression[i]);
   }
-
   printf("}\n");
 }
 
 int main(int argc, char *argv[]) {
-  const char version[] = "v0.9.67";
+  const char version[] = "v1.0.0";
 
-  if (argc > 1) {
+  char *valid_keys[] = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
+
+  int bpm = -1;
+  char *mode = NULL;
+  char *key = NULL;
+
+  if (argc == 2) {
     if (strcmp(argv[1], "-u") == 0 || strcmp(argv[1], "update") == 0) {
       check_updates();
       return 0;
     } else if (strcmp(argv[1], "-v") == 0 || strcmp(argv[1], "version") == 0) {
       printf("SongStarter version %s\n", version);
       return 0;
+    } else if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "help") == 0) {
+      printf("Example usage:\n");
+      printf("  song-starter                  Generate parameters\n");
+      printf("  song-starter [-h | help]      Get help\n");
+      printf("  song-starter [-v | version]   List version\n");
+      printf("  song-starter [-u | update]    Check and install updates\n");
+      printf("\nFurther help -> https://github.com/gatlanit/Song-Starter\n");
+      return 0;
     }
-  }
+  } 
 
   char input[10]; // Buffer for user input
 
