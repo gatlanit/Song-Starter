@@ -47,9 +47,10 @@ user@computer ~ %
 ### TODO:
 
 ### WIP:
-  - [ ] v1.0.0 Release (Final touches and polish)
+  - [ ] CLI arguments (flags)
 
 ### DONE:
+  - [x] v1.0.0 Release 
   - [x] Intelligent chord progression generator
   - [x] BPM randomizer (75-200)
   - [x] Key randomizer
