@@ -42,9 +42,9 @@ jobs:
             export OS_NAME="osx"
             export CC=clang
             if [[ "${{ matrix.arch }}" == "arm64" ]]; then
-              export CFLAGS="-target arm64-apple-macos11"  # ARM64 for M1/M2 macOS
+              export CFLAGS="-target arm64-apple-macos11"  # aarch64 for Apple Silicon macOS
             elif [[ "${{ matrix.arch }}" == "x86_64" ]]; then
-              export CFLAGS="-arch x86_64"  # x86_64 for Intel-based macOS
+              export CFLAGS="-arch x86_64"  # x86_64 for Intel macOS
             fi
           fi
           $CC $CFLAGS src/main.c -o song-starter-${OS_NAME}-${{ matrix.arch }}
@@ -93,7 +93,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/song-starter-linux-arm64/song-starter-linux-arm64  # Corrected path to the actual file
+          asset_path: ./artifacts/song-starter-linux-arm64/song-starter-linux-arm64
           asset_name: song-starter-linux-arm64
           asset_content_type: application/octet-stream
 
