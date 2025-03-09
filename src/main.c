@@ -6,7 +6,8 @@
 
 /*
   TODO:
-  Command Line arguments to customize paramaters (i.e # chords, mode, key, and bpm)
+  Command Line arguments to customize paramaters (i.e # chords, mode, key, and
+  bpm)
 */
 
 void check_updates() {
@@ -22,10 +23,11 @@ void check_updates() {
 }
 
 int is_number(const char *str) {
-    for (int i = 0; str[i] != '\0'; i++) {
-        if (!isdigit(str[i])) return 0;
-    }
-    return 1;
+  for (int i = 0; str[i] != '\0'; i++) {
+    if (!isdigit(str[i]))
+      return 0;
+  }
+  return 1;
 }
 
 int generate_bpm() {
@@ -63,7 +65,8 @@ void generate_chord_progression(char *mode) {
                                  {4, 2, 1, 6, 0, 0}, {5, 7, 4, 2, 6, 0},
                                  {5, 1, 6, 0, 0, 0}, {1, 6, 3, 0, 0, 0}};
 
-  int columnSizes[8] = {6, 4, 6, 3, 4, 5, 3, 3}; // Predetermined number of columns for each row
+  int columnSizes[8] = {
+      6, 4, 6, 3, 4, 5, 3, 3}; // Predetermined number of columns for each row
   int progresionLengths[] = {4, 8}; // Either 4 or 8 bars long
   int length = progresionLengths[rand() % 2];
 
@@ -92,9 +95,10 @@ void generate_chord_progression(char *mode) {
 }
 
 int main(int argc, char *argv[]) {
-  const char version[] = "v1.0.2";
+  const char version[] = "v1.1";
 
-  char *valid_keys[] = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
+  char *valid_keys[] = {"C",  "C#", "D",  "D#", "E",  "F",
+                        "F#", "G",  "G#", "A",  "A#", "B"};
   const char *valid_modes[] = {"Major", "Minor"};
 
   // Initial values (tagged as eligible for randomization)
@@ -117,8 +121,8 @@ int main(int argc, char *argv[]) {
       printf("  song-starter [-u | update]    Check and install updates\n");
       printf("\nFurther help -> https://github.com/gatlanit/Song-Starter\n");
       return 0;
-    } 
-  } 
+    }
+  }
 
   char input[10]; // Buffer for user input
 
@@ -134,7 +138,7 @@ int main(int argc, char *argv[]) {
 
     printf("BPM: %d\n", generate_bpm());
     printf("Key: %s\n", generate_key());
-    printf("Modes: %s\n", mode);
+    printf("Mode: %s\n", mode);
     generate_chord_progression(mode);
 
     printf("\nRun again? Type anything to refresh (or \"q\" to exit): ");
