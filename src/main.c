@@ -95,7 +95,7 @@ void generate_chord_progression(char *mode) {
 }
 
 int main(int argc, char *argv[]) {
-  const char version[] = "v1.1";
+  const char version[] = "v1.2";
 
   char *valid_keys[] = {"C",  "C#", "D",  "D#", "E",  "F",
                         "F#", "G",  "G#", "A",  "A#", "B"};
