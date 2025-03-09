@@ -3,29 +3,30 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'  # Trigger workflow on tags matching the pattern v*
+      - 'v*'  # Trigger workflow on version tags (e.g., v1.0.0)
 
 jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-22.04, macos-latest]  # Updated Ubuntu version
         arch: [x86_64, arm64]
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4  # Updated checkout action
 
       - name: List files in the working directory
         run: ls -R
 
-      - name: Set up build environment
+      - name: Set up build environment (Linux)
         if: runner.os == 'Linux'
         run: |
           sudo apt update
           sudo apt install -y build-essential
 
-      - name: Set up cross-compiler for ARM64
+      - name: Set up cross-compiler for ARM64 (Linux)
         if: matrix.arch == 'arm64' && runner.os == 'Linux'
         run: sudo apt install -y gcc-aarch64-linux-gnu
 
@@ -42,36 +43,36 @@ jobs:
             export OS_NAME="osx"
             export CC=clang
             if [[ "${{ matrix.arch }}" == "arm64" ]]; then
-              export CFLAGS="-target arm64-apple-macos11"  # aarch64 for Apple Silicon macOS
+              export CFLAGS="-target arm64-apple-macos11"
             elif [[ "${{ matrix.arch }}" == "x86_64" ]]; then
-              export CFLAGS="-arch x86_64"  # x86_64 for Intel macOS
+              export CFLAGS="-arch x86_64"
             fi
           fi
           $CC $CFLAGS src/main.c -o song-starter-${OS_NAME}-${{ matrix.arch }}
 
-
       - name: List files after build
-        run: ls -R .  # This will show if the binary is created
+        run: ls -R .
 
       - name: Upload binary to artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4  # Updated upload action
         with:
-          name: song-starter-${{ matrix.os == 'ubuntu-latest' && 'linux' || 'osx' }}-${{ matrix.arch }}
-          path: song-starter-${{ matrix.os == 'ubuntu-latest' && 'linux' || 'osx' }}-${{ matrix.arch }}
+          name: song-starter-${{ matrix.os == 'ubuntu-22.04' && 'linux' || 'osx' }}-${{ matrix.arch }}
+          path: song-starter-${{ matrix.os == 'ubuntu-22.04' && 'linux' || 'osx' }}-${{ matrix.arch }}
 
   release:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04  # Updated Ubuntu version
     permissions:
       contents: write
+
     steps:
       - name: Download all artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4  # Updated download action
         with:
           path: ./artifacts
 
       - name: List downloaded artifacts
-        run: ls -R ./artifacts  # Check if the artifact is actually downloaded
+        run: ls -R ./artifacts
 
       - name: Create GitHub Release
         id: create_release
@@ -84,54 +85,14 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: List contents of artifact directory (Linux ARM64)
-        run: ls -R ./artifacts/song-starter-linux-arm64
-
-      - name: Upload release assets (Linux ARM64)
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/song-starter-linux-arm64/song-starter-linux-arm64
-          asset_name: song-starter-linux-arm64
-          asset_content_type: application/octet-stream
-
-      - name: List contents of artifact directory (Linux x86_64)
-        run: ls -R ./artifacts/song-starter-linux-x86_64
-
-      - name: Upload Linux x86_64 asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/song-starter-linux-x86_64/song-starter-linux-x86_64
-          asset_name: song-starter-linux-x86_64
-          asset_content_type: application/octet-stream
-
-      - name: List contents of artifact directory (macOS ARM64)
-        run: ls -R ./artifacts/song-starter-osx-arm64
-
-      - name: Upload macOS ARM64 asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/song-starter-osx-arm64/song-starter-osx-arm64
-          asset_name: song-starter-osx-arm64
-          asset_content_type: application/octet-stream
-
-      - name: List contents of artifact directory (macOS x86_64)
-        run: ls -R ./artifacts/song-starter-osx-x86_64
-
-      - name: Upload macOS x86_64 asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./artifacts/song-starter-osx-x86_64/song-starter-osx-x86_64
-          asset_name: song-starter-osx-x86_64
-          asset_content_type: application/octet-stream
+      - name: Upload release assets
+        run: |
+          for file in $(find ./artifacts -type f); do
+            asset_name=$(basename "$file")
+            echo "Uploading $asset_name..."
+            curl -s -X POST \
+              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Content-Type: application/octet-stream" \
+              --data-binary @"$file" \
+              "${{ steps.create_release.outputs.upload_url }}?name=$asset_name"
+          done
