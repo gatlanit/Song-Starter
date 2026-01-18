@@ -1,5 +1,14 @@
 # Song-Starter
 
+## DEPRECATED
+This repository is deprecated in favor of an alternative codebase. Please uninstall with the below uninstall script. 
+```
+curl -sSL https://raw.githubusercontent.com/gatlanit/Song-Starter/master/uninstall.sh | sudo bash
+```
+New repo is here:  
+
+---
+
 ### Do you have writers block? Do you struggle to come up with ideas for music? This program might be able to help you out!
 
 https://github.com/user-attachments/assets/3467c9b4-759b-4ce0-b72a-fdbd926bce0d
