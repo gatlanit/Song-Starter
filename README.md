@@ -26,3 +26,10 @@ A Python CLI tool to generate random music paramaters to help musicians create a
 - Language: Python 3
 - Libraries: ```random```
 - Data Structures: Python lists
+
+## Eisenhower Matrix
+
+|  | Urgent | Not Urgent |
+| :---- | :---- | :---- |
+|  **Important** | **Do \- (Your MVP)** Random BPM generator Random Key+Mode Random starting sound source  Random basic Re-roll parameters | **Schedule \- (For V2.0+)**  Image-to-MIDI Audio Preview Genre Filtering CLI Arguments to customize randomization WebUI (Web frontend) |
+| **Not Important** | **Delegate \- (Use a library)**  Random number generation (use Python’s random) CLI formatted outputs: (just use f-strings) Data structures: (use Python lists) | **Delete \- (Cut it)**  Entire VST Plugin  Accounts  AI for randomization |
