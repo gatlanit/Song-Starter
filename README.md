@@ -11,7 +11,6 @@ A Python CLI tool to generate random music paramaters to help musicians create a
 - Random BPM Generator (80-200)
 - Randomly pick between a list of keys and modes.
 - Selects a instrument or source of sound to start with
-- Pick a common progression from a list of chord progressions
 - Ability to re-roll paramaters
 
 <img width="481" height="532" alt="song-starter_system-diagram drawio" src="https://github.com/user-attachments/assets/4757109d-9352-4ec2-bac3-5a94d9377434" />
